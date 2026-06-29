@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Trading Portfolio</title>
+  <style>
+    :root {
+      --bg:       #0f172a;
+      --surface:  #1e293b;
+      --border:   #334155;
+      --text:     #e2e8f0;
+      --muted:    #94a3b8;
+      --accent:   #38bdf8;
+      --green:    #22c55e;
+      --red:      #ef4444;
+      --yellow:   #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0c4a6e 0%, #1e293b 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 32px 24px;
+    }
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+    header h1 span { color: var(--accent); }
+    .meta {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .meta strong { color: var(--text); }
+
+    /* ── Layout ── */
+    main { max-width: 960px; margin: 40px auto; padding: 0 20px; }
+    section { margin-bottom: 48px; }
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Tables ── */
+    .portfolio-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .portfolio-table th {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .portfolio-table td {
+      padding: 11px 12px;
+      border-bottom: 1px solid #1e293b;
+      vertical-align: middle;
+    }
+    .portfolio-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+    .sym   { font-weight: 700; color: #fff; font-size: 0.95rem; }
+    .num   { text-align: right; font-variant-numeric: tabular-nums; }
+    .dim   { color: var(--muted); font-size: 0.82rem; }
+    .signal-cell { white-space: nowrap; }
+    .signal-bar-bg {
+      display: inline-block;
+      width: 70px;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    .signal-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+    .signal-val { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── Summary cards ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .card-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .card-value { font-size: 1.5rem; font-weight: 700; margin-top: 4px; color: #fff; }
+    .card-sub   { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── History ── */
+    .history-entry {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .history-entry summary {
+      padding: 14px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      list-style: none;
+      user-select: none;
+    }
+    .history-entry summary::-webkit-details-marker { display: none; }
+    .history-entry summary::before {
+      content: "▶";
+      font-size: 0.65rem;
+      color: var(--muted);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .history-entry[open] summary::before { transform: rotate(90deg); }
+    .history-entry:hover summary { background: rgba(255,255,255,0.03); }
+    .h-date     { font-weight: 600; color: var(--text); font-size: 0.9rem; }
+    .h-strategy { font-size: 0.78rem; color: var(--accent); background: rgba(56,189,248,0.1); padding: 2px 8px; border-radius: 4px; }
+    .h-summary  { font-size: 0.8rem; color: var(--muted); margin-left: auto; }
+    .history-body { padding: 0 18px 18px; }
+    .change-badges { margin-bottom: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Misc ── */
+    .empty { color: var(--muted); font-size: 0.9rem; padding: 20px 0; }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Stock Trading <span>Portfolio</span></h1>
+  <div class="meta">
+    <span>Last updated: <strong>Monday, 29 June 2026  21:37</strong></span>
+    <span>Strategy: <strong>pp5_balanced</strong></span>
+    <span>Data as of: <strong>2026-06-18</strong></span>
+  </div>
+</header>
+
+<main>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">Positions</div>
+      <div class="card-value">5</div>
+      <div class="card-sub">active stocks</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Portfolio size</div>
+      <div class="card-value">$100,000</div>
+      <div class="card-sub">total investment</div>
+    </div>
+    <div class="card">
+      <div class="card-label">History</div>
+      <div class="card-value">5</div>
+      <div class="card-sub">snapshots recorded</div>
+    </div>
+  </div>
+
+  <section id="current">
+    <h2>Current Portfolio</h2>
+    
+    <table class="portfolio-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Alloc</th>
+          <th>Price</th>
+          <th>≈&nbsp;USD</th>
+          <th>Signal</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sym">LDOS</td>
+          <td class="num">20.6%</td>
+          <td class="num">$107.12</td>
+          <td class="num">$20,635</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:52%;background:#22c55e"></div></div><span class="signal-val">0.522</span></td>
+          <td class="dim">2026-06-18</td>
+        </tr>
+        <tr>
+          <td class="sym">TRGP</td>
+          <td class="num">20.2%</td>
+          <td class="num">$258.58</td>
+          <td class="num">$20,213</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:51%;background:#22c55e"></div></div><span class="signal-val">0.511</span></td>
+          <td class="dim">2026-06-18</td>
+        </tr>
+        <tr>
+          <td class="sym">HII</td>
+          <td class="num">19.8%</td>
+          <td class="num">$285.43</td>
+          <td class="num">$19,814</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:50%;background:#22c55e"></div></div><span class="signal-val">0.501</span></td>
+          <td class="dim">2026-06-18</td>
+        </tr>
+        <tr>
+          <td class="sym">INCY</td>
+          <td class="num">19.8%</td>
+          <td class="num">$98.22</td>
+          <td class="num">$19,763</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.500</span></td>
+          <td class="dim">2026-06-18</td>
+        </tr>
+        <tr>
+          <td class="sym">CTVA</td>
+          <td class="num">19.6%</td>
+          <td class="num">$78.59</td>
+          <td class="num">$19,574</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.495</span></td>
+          <td class="dim">2026-06-18</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="history">
+    <h2>Portfolio History</h2>
+    
+        <details class="history-entry" open>
+          <summary>
+            <span class="h-date">Sunday, 28 June 2026  17:06</span>
+            <span class="h-strategy">pp5_balanced</span>
+            <span class="h-summary">10 stocks · 10 held</span>
+          </summary>
+          <div class="history-body">
+            <div class="change-badges"><span class="badge" style="background:#6b7280">HOLD ALB</span> <span class="badge" style="background:#6b7280">HOLD BSX</span> <span class="badge" style="background:#6b7280">HOLD CHTR</span> <span class="badge" style="background:#6b7280">HOLD CSGP</span> <span class="badge" style="background:#6b7280">HOLD CTSH</span> <span class="badge" style="background:#6b7280">HOLD DOW</span> <span class="badge" style="background:#6b7280">HOLD FIS</span> <span class="badge" style="background:#6b7280">HOLD FMC</span> <span class="badge" style="background:#6b7280">HOLD LULU</span> <span class="badge" style="background:#6b7280">HOLD MKTX</span></div>
+            
+    <table class="portfolio-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Alloc</th>
+          <th>Price</th>
+          <th>≈&nbsp;USD</th>
+          <th>Signal</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sym">ALB</td>
+          <td class="num">10.4%</td>
+          <td class="num">$133.70</td>
+          <td class="num">$10,350</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:47%;background:#ef4444"></div></div><span class="signal-val">0.474</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CSGP</td>
+          <td class="num">10.3%</td>
+          <td class="num">$82.62</td>
+          <td class="num">$10,273</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:47%;background:#ef4444"></div></div><span class="signal-val">0.470</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">MKTX</td>
+          <td class="num">10.3%</td>
+          <td class="num">$237.26</td>
+          <td class="num">$10,261</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:46%;background:#ef4444"></div></div><span class="signal-val">0.470</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">FMC</td>
+          <td class="num">10.1%</td>
+          <td class="num">$48.47</td>
+          <td class="num">$10,055</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:46%;background:#ef4444"></div></div><span class="signal-val">0.460</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CHTR</td>
+          <td class="num">9.9%</td>
+          <td class="num">$90.67</td>
+          <td class="num">$9,944</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:45%;background:#ef4444"></div></div><span class="signal-val">0.455</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">LULU</td>
+          <td class="num">9.9%</td>
+          <td class="num">$113.25</td>
+          <td class="num">$9,934</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:45%;background:#ef4444"></div></div><span class="signal-val">0.455</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">FIS</td>
+          <td class="num">9.8%</td>
+          <td class="num">$318.53</td>
+          <td class="num">$9,820</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.450</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">DOW</td>
+          <td class="num">9.8%</td>
+          <td class="num">$225.96</td>
+          <td class="num">$9,803</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.449</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">BSX</td>
+          <td class="num">9.8%</td>
+          <td class="num">$67.40</td>
+          <td class="num">$9,781</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.448</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CTSH</td>
+          <td class="num">9.8%</td>
+          <td class="num">$82.63</td>
+          <td class="num">$9,780</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.448</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+      </tbody>
+    </table>
+          </div>
+        </details>
+        <details class="history-entry" >
+          <summary>
+            <span class="h-date">Sunday, 28 June 2026  17:04</span>
+            <span class="h-strategy">pp5_balanced</span>
+            <span class="h-summary">10 stocks · 10 held</span>
+          </summary>
+          <div class="history-body">
+            <div class="change-badges"><span class="badge" style="background:#6b7280">HOLD ALB</span> <span class="badge" style="background:#6b7280">HOLD BSX</span> <span class="badge" style="background:#6b7280">HOLD CHTR</span> <span class="badge" style="background:#6b7280">HOLD CSGP</span> <span class="badge" style="background:#6b7280">HOLD CTSH</span> <span class="badge" style="background:#6b7280">HOLD DOW</span> <span class="badge" style="background:#6b7280">HOLD FIS</span> <span class="badge" style="background:#6b7280">HOLD FMC</span> <span class="badge" style="background:#6b7280">HOLD LULU</span> <span class="badge" style="background:#6b7280">HOLD MKTX</span></div>
+            
+    <table class="portfolio-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Alloc</th>
+          <th>Price</th>
+          <th>≈&nbsp;USD</th>
+          <th>Signal</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sym">ALB</td>
+          <td class="num">10.4%</td>
+          <td class="num">$133.70</td>
+          <td class="num">$10,350</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:47%;background:#ef4444"></div></div><span class="signal-val">0.474</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CSGP</td>
+          <td class="num">10.3%</td>
+          <td class="num">$82.62</td>
+          <td class="num">$10,273</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:47%;background:#ef4444"></div></div><span class="signal-val">0.470</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">MKTX</td>
+          <td class="num">10.3%</td>
+          <td class="num">$237.26</td>
+          <td class="num">$10,261</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:46%;background:#ef4444"></div></div><span class="signal-val">0.470</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">FMC</td>
+          <td class="num">10.1%</td>
+          <td class="num">$48.47</td>
+          <td class="num">$10,055</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:46%;background:#ef4444"></div></div><span class="signal-val">0.460</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CHTR</td>
+          <td class="num">9.9%</td>
+          <td class="num">$90.67</td>
+          <td class="num">$9,944</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:45%;background:#ef4444"></div></div><span class="signal-val">0.455</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">LULU</td>
+          <td class="num">9.9%</td>
+          <td class="num">$113.25</td>
+          <td class="num">$9,934</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:45%;background:#ef4444"></div></div><span class="signal-val">0.455</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">FIS</td>
+          <td class="num">9.8%</td>
+          <td class="num">$318.53</td>
+          <td class="num">$9,820</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.450</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">DOW</td>
+          <td class="num">9.8%</td>
+          <td class="num">$225.96</td>
+          <td class="num">$9,803</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.449</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">BSX</td>
+          <td class="num">9.8%</td>
+          <td class="num">$67.40</td>
+          <td class="num">$9,781</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.448</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CTSH</td>
+          <td class="num">9.8%</td>
+          <td class="num">$82.63</td>
+          <td class="num">$9,780</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.448</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+      </tbody>
+    </table>
+          </div>
+        </details>
+        <details class="history-entry" >
+          <summary>
+            <span class="h-date">Sunday, 28 June 2026  17:00</span>
+            <span class="h-strategy">pp5_balanced</span>
+            <span class="h-summary">10 stocks · 10 held</span>
+          </summary>
+          <div class="history-body">
+            <div class="change-badges"><span class="badge" style="background:#6b7280">HOLD ALB</span> <span class="badge" style="background:#6b7280">HOLD BSX</span> <span class="badge" style="background:#6b7280">HOLD CHTR</span> <span class="badge" style="background:#6b7280">HOLD CSGP</span> <span class="badge" style="background:#6b7280">HOLD CTSH</span> <span class="badge" style="background:#6b7280">HOLD DOW</span> <span class="badge" style="background:#6b7280">HOLD FIS</span> <span class="badge" style="background:#6b7280">HOLD FMC</span> <span class="badge" style="background:#6b7280">HOLD LULU</span> <span class="badge" style="background:#6b7280">HOLD MKTX</span></div>
+            
+    <table class="portfolio-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Alloc</th>
+          <th>Price</th>
+          <th>≈&nbsp;USD</th>
+          <th>Signal</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sym">ALB</td>
+          <td class="num">10.4%</td>
+          <td class="num">$133.70</td>
+          <td class="num">$10,350</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:47%;background:#ef4444"></div></div><span class="signal-val">0.474</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CSGP</td>
+          <td class="num">10.3%</td>
+          <td class="num">$82.62</td>
+          <td class="num">$10,273</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:47%;background:#ef4444"></div></div><span class="signal-val">0.470</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">MKTX</td>
+          <td class="num">10.3%</td>
+          <td class="num">$237.26</td>
+          <td class="num">$10,261</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:46%;background:#ef4444"></div></div><span class="signal-val">0.470</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">FMC</td>
+          <td class="num">10.1%</td>
+          <td class="num">$48.47</td>
+          <td class="num">$10,055</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:46%;background:#ef4444"></div></div><span class="signal-val">0.460</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CHTR</td>
+          <td class="num">9.9%</td>
+          <td class="num">$90.67</td>
+          <td class="num">$9,944</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:45%;background:#ef4444"></div></div><span class="signal-val">0.455</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">LULU</td>
+          <td class="num">9.9%</td>
+          <td class="num">$113.25</td>
+          <td class="num">$9,934</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:45%;background:#ef4444"></div></div><span class="signal-val">0.455</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">FIS</td>
+          <td class="num">9.8%</td>
+          <td class="num">$318.53</td>
+          <td class="num">$9,820</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.450</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">DOW</td>
+          <td class="num">9.8%</td>
+          <td class="num">$225.96</td>
+          <td class="num">$9,803</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.449</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">BSX</td>
+          <td class="num">9.8%</td>
+          <td class="num">$67.40</td>
+          <td class="num">$9,781</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.448</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CTSH</td>
+          <td class="num">9.8%</td>
+          <td class="num">$82.63</td>
+          <td class="num">$9,780</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.448</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+      </tbody>
+    </table>
+          </div>
+        </details>
+        <details class="history-entry" >
+          <summary>
+            <span class="h-date">Sunday, 28 June 2026  16:55</span>
+            <span class="h-strategy">pp5_balanced</span>
+            <span class="h-summary">10 stocks · 10 bought · 5 sold</span>
+          </summary>
+          <div class="history-body">
+            <div class="change-badges"><span class="badge" style="background:#16a34a">BUY ALB</span> <span class="badge" style="background:#16a34a">BUY BSX</span> <span class="badge" style="background:#16a34a">BUY CHTR</span> <span class="badge" style="background:#16a34a">BUY CSGP</span> <span class="badge" style="background:#16a34a">BUY CTSH</span> <span class="badge" style="background:#16a34a">BUY DOW</span> <span class="badge" style="background:#16a34a">BUY FIS</span> <span class="badge" style="background:#16a34a">BUY FMC</span> <span class="badge" style="background:#16a34a">BUY LULU</span> <span class="badge" style="background:#16a34a">BUY MKTX</span> <span class="badge" style="background:#dc2626">SELL CTVA</span> <span class="badge" style="background:#dc2626">SELL HII</span> <span class="badge" style="background:#dc2626">SELL INCY</span> <span class="badge" style="background:#dc2626">SELL LDOS</span> <span class="badge" style="background:#dc2626">SELL TRGP</span></div>
+            
+    <table class="portfolio-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Alloc</th>
+          <th>Price</th>
+          <th>≈&nbsp;USD</th>
+          <th>Signal</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sym">ALB</td>
+          <td class="num">10.4%</td>
+          <td class="num">$133.70</td>
+          <td class="num">$10,350</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:47%;background:#ef4444"></div></div><span class="signal-val">0.474</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CSGP</td>
+          <td class="num">10.3%</td>
+          <td class="num">$82.62</td>
+          <td class="num">$10,273</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:47%;background:#ef4444"></div></div><span class="signal-val">0.470</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">MKTX</td>
+          <td class="num">10.3%</td>
+          <td class="num">$237.26</td>
+          <td class="num">$10,261</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:46%;background:#ef4444"></div></div><span class="signal-val">0.470</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">FMC</td>
+          <td class="num">10.1%</td>
+          <td class="num">$48.47</td>
+          <td class="num">$10,055</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:46%;background:#ef4444"></div></div><span class="signal-val">0.460</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CHTR</td>
+          <td class="num">9.9%</td>
+          <td class="num">$90.67</td>
+          <td class="num">$9,944</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:45%;background:#ef4444"></div></div><span class="signal-val">0.455</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">LULU</td>
+          <td class="num">9.9%</td>
+          <td class="num">$113.25</td>
+          <td class="num">$9,934</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:45%;background:#ef4444"></div></div><span class="signal-val">0.455</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">FIS</td>
+          <td class="num">9.8%</td>
+          <td class="num">$318.53</td>
+          <td class="num">$9,820</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.450</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">DOW</td>
+          <td class="num">9.8%</td>
+          <td class="num">$225.96</td>
+          <td class="num">$9,803</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.449</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">BSX</td>
+          <td class="num">9.8%</td>
+          <td class="num">$67.40</td>
+          <td class="num">$9,781</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.448</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+        <tr>
+          <td class="sym">CTSH</td>
+          <td class="num">9.8%</td>
+          <td class="num">$82.63</td>
+          <td class="num">$9,780</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:44%;background:#ef4444"></div></div><span class="signal-val">0.448</span></td>
+          <td class="dim">2026-06-26</td>
+        </tr>
+      </tbody>
+    </table>
+          </div>
+        </details>
+        <details class="history-entry" >
+          <summary>
+            <span class="h-date">Sunday, 28 June 2026  13:34</span>
+            <span class="h-strategy">pp5_balanced</span>
+            <span class="h-summary">3 stocks · 3 bought · 3 sold</span>
+          </summary>
+          <div class="history-body">
+            <div class="change-badges"><span class="badge" style="background:#16a34a">BUY CSGP</span> <span class="badge" style="background:#16a34a">BUY EPAM</span> <span class="badge" style="background:#16a34a">BUY LULU</span> <span class="badge" style="background:#dc2626">SELL CTVA</span> <span class="badge" style="background:#dc2626">SELL EOG</span> <span class="badge" style="background:#dc2626">SELL LOW</span></div>
+            
+    <table class="portfolio-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Alloc</th>
+          <th>Price</th>
+          <th>≈&nbsp;USD</th>
+          <th>Signal</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sym">CSGP</td>
+          <td class="num">33.4%</td>
+          <td class="num">$80.09</td>
+          <td class="num">$33,401</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.495</span></td>
+          <td class="dim">2026-06-24</td>
+        </tr>
+        <tr>
+          <td class="sym">LULU</td>
+          <td class="num">33.4%</td>
+          <td class="num">$221.45</td>
+          <td class="num">$33,357</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.495</span></td>
+          <td class="dim">2026-06-24</td>
+        </tr>
+        <tr>
+          <td class="sym">EPAM</td>
+          <td class="num">33.2%</td>
+          <td class="num">$134.45</td>
+          <td class="num">$33,242</td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.493</span></td>
+          <td class="dim">2026-06-24</td>
+        </tr>
+      </tbody>
+    </table>
+          </div>
+        </details>
+  </section>
+
+</main>
+
+<footer>
+  Generated by update_web_portfolio.py &nbsp;·&nbsp; Monday, 29 June 2026  21:37
+</footer>
+
+</body>
+</html>
