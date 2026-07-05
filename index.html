@@ -49,7 +49,7 @@
     .meta strong { color: var(--text); }
 
     /* ── Layout ── */
-    main { max-width: 960px; margin: 40px auto; padding: 0 20px; }
+    main { max-width: 1080px; margin: 40px auto; padding: 0 20px; }
     section { margin-bottom: 48px; }
     h2 {
       font-size: 1.1rem;
@@ -57,7 +57,7 @@
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--border);
     }
@@ -67,6 +67,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.9rem;
+      margin-top: 8px;
     }
     .portfolio-table th {
       text-align: left;
@@ -77,6 +78,7 @@
       color: var(--muted);
       border-bottom: 1px solid var(--border);
     }
+    .portfolio-table th.num { text-align: right; }
     .portfolio-table td {
       padding: 11px 12px;
       border-bottom: 1px solid #1e293b;
@@ -86,6 +88,14 @@
     .sym   { font-weight: 700; color: #fff; font-size: 0.95rem; }
     .num   { text-align: right; font-variant-numeric: tabular-nums; }
     .dim   { color: var(--muted); font-size: 0.82rem; }
+    .pos   { color: var(--green); font-weight: 600; }
+    .neg   { color: var(--red);   font-weight: 600; }
+    .total-row td {
+      font-weight: 700;
+      color: #fff;
+      border-top: 2px solid var(--border);
+      border-bottom: none;
+    }
     .signal-cell { white-space: nowrap; }
     .signal-bar-bg {
       display: inline-block;
@@ -97,7 +107,7 @@
       margin-right: 6px;
     }
     .signal-bar-fill {
-      height: 100%%;
+      height: 100%;
       border-radius: 3px;
     }
     .signal-val { font-size: 0.82rem; color: var(--muted); }
@@ -105,9 +115,9 @@
     /* ── Summary cards ── */
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
-      margin-bottom: 32px;
+      margin-bottom: 40px;
     }
     .card {
       background: var(--surface);
@@ -119,8 +129,9 @@
     .card-value { font-size: 1.5rem; font-weight: 700; margin-top: 4px; color: #fff; }
     .card-sub   { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
-    /* ── Previous portfolio ── */
-    .prev-date { font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+    /* ── Section headings ── */
+    .prev-date  { font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+    .value-line { font-size: 1.05rem; font-weight: 600; color: #fff; margin: 6px 0; }
 
     /* ── Badges ── */
     .badge {
@@ -149,7 +160,7 @@
 <header>
   <h1>Stock Trading <span>Portfolio</span></h1>
   <div class="meta">
-    <span>Last updated: <strong>Monday, 06 July 2026  10:22</strong></span>
+    <span>Last updated: <strong>Monday, 06 July 2026  10:57</strong></span>
     <span>Data as of: <strong>2026-07-02</strong></span>
   </div>
 </header>
@@ -158,29 +169,42 @@
 
   <div class="cards">
     <div class="card">
+      <div class="card-label">Current portfolio value</div>
+      <div class="card-value pos">$106,323</div>
+      <div class="card-sub">+6.32% since inception</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Initial investment</div>
+      <div class="card-value">$100,000</div>
+      <div class="card-sub">value chained across all portfolios</div>
+    </div>
+    <div class="card">
       <div class="card-label">Positions</div>
       <div class="card-value">1</div>
       <div class="card-sub">active stocks</div>
     </div>
-    <div class="card">
-      <div class="card-label">Portfolio size</div>
-      <div class="card-value">$100,000</div>
-      <div class="card-sub">total investment</div>
-    </div>
   </div>
 
-  <section id="current">
+  
+  <section>
     <h2>Current Portfolio</h2>
+    <p class="prev-date">Held since 2026-07-02 &nbsp;·&nbsp; valued at market prices as of 06 Jul 2026 10:57</p>
+    <p class="value-line">$106,323 → $106,323
+       &nbsp;(<span class="pos">+0.00%</span>)</p>
+    <div class="change-badges" style="margin:10px 0 14px"><span class="badge" style="background:#16a34a">BUY CSGP</span> <span class="badge" style="background:#dc2626">SELL CTVA</span> <span class="badge" style="background:#dc2626">SELL HII</span> <span class="badge" style="background:#dc2626">SELL INCY</span> <span class="badge" style="background:#dc2626">SELL LDOS</span> <span class="badge" style="background:#dc2626">SELL TRGP</span></div>
+    
     
     <table class="portfolio-table">
       <thead>
         <tr>
           <th>Symbol</th>
-          <th>Alloc</th>
-          <th>Price</th>
-          <th>≈&nbsp;USD</th>
+          <th class="num">Alloc</th>
+          <th class="num">Buy price</th>
+          <th class="num">Current price</th>
+          <th class="num">Buy value</th>
+          <th class="num">Current value</th>
+          <th class="num">P/L</th>
           <th>Signal</th>
-          <th>Date</th>
         </tr>
       </thead>
       <tbody>
@@ -188,48 +212,115 @@
           <td class="sym">CSGP</td>
           <td class="num">100.0%</td>
           <td class="num">$30.00</td>
-          <td class="num">$100,000</td>
+          <td class="num">$30.00</td>
+          <td class="num">$106,323</td>
+          <td class="num">$106,323</td>
+          <td class="num"><span class="pos">+0.00%</span></td>
           <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.491</span></td>
-          <td class="dim">2026-07-02</td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td>Total</td>
+          <td></td><td></td><td></td>
+          <td class="num">$106,323</td>
+          <td class="num">$106,323</td>
+          <td class="num"><span class="pos">+0.00%</span></td>
+          <td></td>
+        </tr>
+      </tfoot>
     </table>
   </section>
-
-  <section id="previous">
-    <h2>Previous Portfolio</h2>
+  <section>
+    <h2>Previous Portfolio &nbsp;·&nbsp; 2026-06-18 → 2026-07-02</h2>
+    <p class="prev-date">Bought 2026-06-18, sold 2026-07-02</p>
+    <p class="value-line">$100,000 → $106,323
+       &nbsp;(<span class="pos">+6.32%</span>)</p>
+    <div class="change-badges" style="margin:10px 0 14px"><span class="badge" style="background:#16a34a">BUY CTVA</span> <span class="badge" style="background:#16a34a">BUY HII</span> <span class="badge" style="background:#16a34a">BUY INCY</span> <span class="badge" style="background:#16a34a">BUY LDOS</span> <span class="badge" style="background:#16a34a">BUY TRGP</span></div>
     
-    <p class="prev-date">As of Sunday, 05 July 2026</p>
-    <div class="change-badges" style="margin:12px 0 16px"><span class="badge" style="background:#6b7280">HOLD CSGP</span></div>
     
     <table class="portfolio-table">
       <thead>
         <tr>
           <th>Symbol</th>
-          <th>Alloc</th>
-          <th>Price</th>
-          <th>≈&nbsp;USD</th>
-          <th>Signal</th>
-          <th>Date</th>
+          <th class="num">Alloc</th>
+          <th class="num">Buy price</th>
+          <th class="num">Sell price</th>
+          <th class="num">Buy value</th>
+          <th class="num">Sell value</th>
+          <th class="num">P/L</th>
+          
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="sym">CSGP</td>
-          <td class="num">100.0%</td>
-          <td class="num">$30.00</td>
-          <td class="num">$100,000</td>
-          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.491</span></td>
-          <td class="dim">2026-07-02</td>
+          <td class="sym">LDOS</td>
+          <td class="num">20.6%</td>
+          <td class="num">$107.12</td>
+          <td class="num">$108.84</td>
+          <td class="num">$20,635</td>
+          <td class="num">$20,967</td>
+          <td class="num"><span class="pos">+1.61%</span></td>
+          
+        </tr>
+        <tr>
+          <td class="sym">TRGP</td>
+          <td class="num">20.2%</td>
+          <td class="num">$258.58</td>
+          <td class="num">$258.88</td>
+          <td class="num">$20,213</td>
+          <td class="num">$20,237</td>
+          <td class="num"><span class="pos">+0.12%</span></td>
+          
+        </tr>
+        <tr>
+          <td class="sym">HII</td>
+          <td class="num">19.8%</td>
+          <td class="num">$285.43</td>
+          <td class="num">$291.50</td>
+          <td class="num">$19,814</td>
+          <td class="num">$20,235</td>
+          <td class="num"><span class="pos">+2.13%</span></td>
+          
+        </tr>
+        <tr>
+          <td class="sym">INCY</td>
+          <td class="num">19.8%</td>
+          <td class="num">$98.22</td>
+          <td class="num">$116.86</td>
+          <td class="num">$19,763</td>
+          <td class="num">$23,514</td>
+          <td class="num"><span class="pos">+18.98%</span></td>
+          
+        </tr>
+        <tr>
+          <td class="sym">CTVA</td>
+          <td class="num">19.6%</td>
+          <td class="num">$78.59</td>
+          <td class="num">$85.80</td>
+          <td class="num">$19,574</td>
+          <td class="num">$21,370</td>
+          <td class="num"><span class="pos">+9.17%</span></td>
+          
         </tr>
       </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td>Total</td>
+          <td></td><td></td><td></td>
+          <td class="num">$100,000</td>
+          <td class="num">$106,323</td>
+          <td class="num"><span class="pos">+6.32%</span></td>
+          
+        </tr>
+      </tfoot>
     </table>
   </section>
 
 </main>
 
 <footer>
-  Generated by update_web_portfolio.py &nbsp;·&nbsp; Monday, 06 July 2026  10:22
+  Generated by update_web_portfolio.py &nbsp;·&nbsp; Monday, 06 July 2026  10:57
 </footer>
 
 </body>
