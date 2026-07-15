@@ -145,6 +145,28 @@
     }
     .change-badges { display: flex; flex-wrap: wrap; gap: 6px; }
 
+    /* ── Disclaimer ── */
+    .disclaimer-section {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .disclaimer-section h2 { color: var(--muted); }
+    .disclaimer-text {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .disclaimer-text p { margin-bottom: 12px; }
+    .disclaimer-link {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--muted);
+      margin-left: auto;
+    }
+    .disclaimer-link:hover { color: var(--text); border-color: var(--text); }
+
     /* ── Misc ── */
     .empty { color: var(--muted); font-size: 0.9rem; padding: 20px 0; }
     footer {
@@ -160,8 +182,9 @@
 <header>
   <h1>Stock Trading <span>Portfolio</span></h1>
   <div class="meta">
-    <span>Last updated: <strong>Monday, 06 July 2026  10:57</strong></span>
-    <span>Data as of: <strong>2026-07-02</strong></span>
+    <span>Last updated: <strong>Wednesday, 15 July 2026  16:12</strong></span>
+    <span>Data as of: <strong>2026-06-18</strong></span>
+    <a href="#disclaimer" class="disclaimer-link">Disclaimer</a>
   </div>
 </header>
 
@@ -170,8 +193,8 @@
   <div class="cards">
     <div class="card">
       <div class="card-label">Current portfolio value</div>
-      <div class="card-value pos">$106,323</div>
-      <div class="card-sub">+6.32% since inception</div>
+      <div class="card-value pos">$113,451</div>
+      <div class="card-sub">+13.45% since inception</div>
     </div>
     <div class="card">
       <div class="card-label">Initial investment</div>
@@ -180,7 +203,7 @@
     </div>
     <div class="card">
       <div class="card-label">Positions</div>
-      <div class="card-value">1</div>
+      <div class="card-value">5</div>
       <div class="card-sub">active stocks</div>
     </div>
   </div>
@@ -188,10 +211,10 @@
   
   <section>
     <h2>Current Portfolio</h2>
-    <p class="prev-date">Held since 2026-07-02 &nbsp;·&nbsp; valued at market prices as of 06 Jul 2026 10:57</p>
-    <p class="value-line">$106,323 → $106,323
-       &nbsp;(<span class="pos">+0.00%</span>)</p>
-    <div class="change-badges" style="margin:10px 0 14px"><span class="badge" style="background:#16a34a">BUY CSGP</span> <span class="badge" style="background:#dc2626">SELL CTVA</span> <span class="badge" style="background:#dc2626">SELL HII</span> <span class="badge" style="background:#dc2626">SELL INCY</span> <span class="badge" style="background:#dc2626">SELL LDOS</span> <span class="badge" style="background:#dc2626">SELL TRGP</span></div>
+    <p class="prev-date">Held since 2026-06-18 &nbsp;·&nbsp; valued at market prices as of 15 Jul 2026 16:12</p>
+    <p class="value-line">$106,748 → $113,451
+       &nbsp;(<span class="pos">+6.28%</span>)</p>
+    
     
     
     <table class="portfolio-table">
@@ -209,14 +232,99 @@
       </thead>
       <tbody>
         <tr>
+          <td class="sym">LDOS</td>
+          <td class="num">20.6%</td>
+          <td class="num">$107.12</td>
+          <td class="num">$106.58</td>
+          <td class="num">$22,028</td>
+          <td class="num">$21,917</td>
+          <td class="num"><span class="neg">-0.50%</span></td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:52%;background:#22c55e"></div></div><span class="signal-val">0.522</span></td>
+        </tr>
+        <tr>
+          <td class="sym">TRGP</td>
+          <td class="num">20.2%</td>
+          <td class="num">$258.58</td>
+          <td class="num">$279.40</td>
+          <td class="num">$21,577</td>
+          <td class="num">$23,314</td>
+          <td class="num"><span class="pos">+8.05%</span></td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:51%;background:#22c55e"></div></div><span class="signal-val">0.511</span></td>
+        </tr>
+        <tr>
+          <td class="sym">HII</td>
+          <td class="num">19.8%</td>
+          <td class="num">$285.43</td>
+          <td class="num">$284.86</td>
+          <td class="num">$21,151</td>
+          <td class="num">$21,109</td>
+          <td class="num"><span class="neg">-0.20%</span></td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:50%;background:#22c55e"></div></div><span class="signal-val">0.501</span></td>
+        </tr>
+        <tr>
+          <td class="sym">INCY</td>
+          <td class="num">19.8%</td>
+          <td class="num">$98.22</td>
+          <td class="num">$114.23</td>
+          <td class="num">$21,097</td>
+          <td class="num">$24,536</td>
+          <td class="num"><span class="pos">+16.30%</span></td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.500</span></td>
+        </tr>
+        <tr>
+          <td class="sym">CTVA</td>
+          <td class="num">19.6%</td>
+          <td class="num">$78.59</td>
+          <td class="num">$84.91</td>
+          <td class="num">$20,895</td>
+          <td class="num">$22,576</td>
+          <td class="num"><span class="pos">+8.04%</span></td>
+          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.495</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td>Total</td>
+          <td></td><td></td><td></td>
+          <td class="num">$106,748</td>
+          <td class="num">$113,451</td>
+          <td class="num"><span class="pos">+6.28%</span></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+  <section>
+    <h2>Previous Portfolio &nbsp;·&nbsp; 2026-07-02 → 2026-06-18</h2>
+    <p class="prev-date">Bought 2026-07-02, sold 2026-06-18</p>
+    <p class="value-line">$106,323 → $106,748
+       &nbsp;(<span class="pos">+0.40%</span>)</p>
+    <div class="change-badges" style="margin:10px 0 14px"><span class="badge" style="background:#16a34a">BUY CSGP</span> <span class="badge" style="background:#dc2626">SELL CTVA</span> <span class="badge" style="background:#dc2626">SELL HII</span> <span class="badge" style="background:#dc2626">SELL INCY</span> <span class="badge" style="background:#dc2626">SELL LDOS</span> <span class="badge" style="background:#dc2626">SELL TRGP</span></div>
+    
+    
+    <table class="portfolio-table">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th class="num">Alloc</th>
+          <th class="num">Buy price</th>
+          <th class="num">Sell price</th>
+          <th class="num">Buy value</th>
+          <th class="num">Sell value</th>
+          <th class="num">P/L</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
           <td class="sym">CSGP</td>
           <td class="num">100.0%</td>
           <td class="num">$30.00</td>
-          <td class="num">$30.00</td>
+          <td class="num">$30.12</td>
           <td class="num">$106,323</td>
-          <td class="num">$106,323</td>
-          <td class="num"><span class="pos">+0.00%</span></td>
-          <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:49%;background:#f59e0b"></div></div><span class="signal-val">0.491</span></td>
+          <td class="num">$106,748</td>
+          <td class="num"><span class="pos">+0.40%</span></td>
+          
         </tr>
       </tbody>
       <tfoot>
@@ -224,9 +332,9 @@
           <td>Total</td>
           <td></td><td></td><td></td>
           <td class="num">$106,323</td>
-          <td class="num">$106,323</td>
-          <td class="num"><span class="pos">+0.00%</span></td>
-          <td></td>
+          <td class="num">$106,748</td>
+          <td class="num"><span class="pos">+0.40%</span></td>
+          
         </tr>
       </tfoot>
     </table>
@@ -317,10 +425,20 @@
     </table>
   </section>
 
+  <section id="disclaimer" class="disclaimer-section">
+    <h2>Disclaimer</h2>
+    <div class="disclaimer-text">
+      <p>The information provided on this website, including but not limited to any data, results, or insights generated by our algorithmic trading system, is for informational purposes only. It is not intended to serve as financial advice, investment recommendations, or an endorsement to buy or sell any securities. The performance of any trading algorithm, including the one showcased on this website, is inherently uncertain and may result in both profits and losses. Past performance of the algorithm is not indicative of future results.</p>
+      <p>All users of this website should be aware that algorithmic trading involves substantial risks and may not be suitable for all investors. The decisions made based on the information provided by our system are solely the responsibility of the user. By using this website and the information contained herein, you acknowledge that you are solely responsible for any investment decisions you make and the consequences thereof, including any financial loss or gain.</p>
+      <p>We strongly advise users to conduct their own independent research and/or consult with a qualified financial advisor before making any investment decisions. Our website, its owners, developers, and affiliates do not guarantee the accuracy, completeness, reliability, or timeliness of the information provided and shall not be held liable for any damages, losses, or costs incurred by users as a result of their use of the website.</p>
+      <p>By accessing and using this website, you acknowledge and agree to the terms of this disclaimer. Your use of the website indicates your acceptance of all the risks associated with algorithmic trading and your understanding that the information provided is not a substitute for professional financial advice.</p>
+    </div>
+  </section>
+
 </main>
 
 <footer>
-  Generated by update_web_portfolio.py &nbsp;·&nbsp; Monday, 06 July 2026  10:57
+  Generated by update_web_portfolio.py &nbsp;·&nbsp; Wednesday, 15 July 2026  16:12
 </footer>
 
 </body>
