@@ -112,6 +112,19 @@
     }
     .signal-val { font-size: 0.82rem; color: var(--muted); }
 
+    /* ── Benchmark disclaimer ── */
+    .benchmark-note {
+      margin-bottom: 24px;
+      padding: 14px 20px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .benchmark-note strong { color: var(--yellow); }
+
     /* ── Summary cards ── */
     .cards {
       display: grid;
@@ -182,7 +195,7 @@
 <header>
   <h1>Stock Trading <span>Portfolio</span></h1>
   <div class="meta">
-    <span>Last updated: <strong>Tuesday, 21 July 2026  11:04</strong></span>
+    <span>Last updated: <strong>Wednesday, 22 July 2026  04:04</strong></span>
     <span>Data as of: <strong>2026-07-13</strong></span>
     <a href="#disclaimer" class="disclaimer-link">Disclaimer</a>
   </div>
@@ -190,16 +203,23 @@
 
 <main>
 
+  <div class="benchmark-note">
+    📊 <strong>Hypothetical benchmark</strong> — this page tracks how a fixed
+    $100,000 starting investment would have performed if traded
+    using this exact strategy's decisions since inception. It does not reflect
+    your real brokerage account balance or which orders actually executed.
+  </div>
+
   <div class="cards">
     <div class="card">
-      <div class="card-label">Current portfolio value</div>
-      <div class="card-value pos">$100,920</div>
-      <div class="card-sub">+0.92% since inception</div>
+      <div class="card-label">Simulated portfolio value</div>
+      <div class="card-value pos">$100,692</div>
+      <div class="card-sub">+0.69% since inception (hypothetical)</div>
     </div>
     <div class="card">
-      <div class="card-label">Initial investment</div>
+      <div class="card-label">Hypothetical starting investment</div>
       <div class="card-value">$100,000</div>
-      <div class="card-sub">value chained across all portfolios</div>
+      <div class="card-sub">benchmark baseline — not your real account</div>
     </div>
     <div class="card">
       <div class="card-label">Positions</div>
@@ -211,9 +231,9 @@
   
   <section>
     <h2>Current Portfolio</h2>
-    <p class="prev-date">Held since 2026-07-13 &nbsp;·&nbsp; valued at market prices as of 21 Jul 2026 11:04</p>
-    <p class="value-line">$101,963 → $100,920
-       &nbsp;(<span class="neg">-1.02%</span>)</p>
+    <p class="prev-date">Held since 2026-07-13 &nbsp;·&nbsp; valued at market prices as of 22 Jul 2026 04:04</p>
+    <p class="value-line">$101,963 → $100,692
+       &nbsp;(<span class="neg">-1.25%</span>)</p>
     <div class="change-badges" style="margin:10px 0 14px"><span class="badge" style="background:#16a34a">BUY JBL</span> <span class="badge" style="background:#dc2626">SELL ORCL</span> <span class="badge" style="background:#6b7280">HOLD ALB</span> <span class="badge" style="background:#6b7280">HOLD CSGP</span> <span class="badge" style="background:#6b7280">HOLD DD</span> <span class="badge" style="background:#6b7280">HOLD IT</span></div>
     
     
@@ -234,51 +254,51 @@
         <tr>
           <td class="sym">DD</td>
           <td class="num">21.4%</td>
-          <td class="num">$132.66</td>
-          <td class="num">$135.75</td>
+          <td class="num" title="Bought 2026-07-13">$132.66</td>
+          <td class="num">$138.81</td>
           <td class="num">$21,802</td>
-          <td class="num">$22,309</td>
-          <td class="num"><span class="pos">+2.33%</span></td>
+          <td class="num">$22,812</td>
+          <td class="num"><span class="pos">+4.64%</span></td>
           <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:55%;background:#22c55e"></div></div><span class="signal-val">0.556</span></td>
         </tr>
         <tr>
           <td class="sym">CSGP</td>
           <td class="num">20.2%</td>
-          <td class="num">$28.77</td>
-          <td class="num">$29.68</td>
+          <td class="num" title="Bought 2026-07-02">$30.00</td>
+          <td class="num">$28.72</td>
           <td class="num">$20,634</td>
-          <td class="num">$21,287</td>
-          <td class="num"><span class="pos">+3.16%</span></td>
+          <td class="num">$20,598</td>
+          <td class="num"><span class="neg">-4.27%</span></td>
           <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:52%;background:#22c55e"></div></div><span class="signal-val">0.526</span></td>
         </tr>
         <tr>
           <td class="sym">IT</td>
           <td class="num">19.9%</td>
-          <td class="num">$141.31</td>
-          <td class="num">$141.06</td>
+          <td class="num" title="Bought 2026-07-13">$141.31</td>
+          <td class="num">$135.62</td>
           <td class="num">$20,256</td>
-          <td class="num">$20,220</td>
-          <td class="num"><span class="neg">-0.18%</span></td>
+          <td class="num">$19,439</td>
+          <td class="num"><span class="neg">-4.03%</span></td>
           <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:51%;background:#22c55e"></div></div><span class="signal-val">0.516</span></td>
         </tr>
         <tr>
           <td class="sym">ALB</td>
           <td class="num">19.7%</td>
-          <td class="num">$125.79</td>
-          <td class="num">$118.20</td>
+          <td class="num" title="Bought 2026-07-13">$125.79</td>
+          <td class="num">$118.77</td>
           <td class="num">$20,058</td>
-          <td class="num">$18,848</td>
-          <td class="num"><span class="neg">-6.03%</span></td>
+          <td class="num">$18,939</td>
+          <td class="num"><span class="neg">-5.58%</span></td>
           <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:51%;background:#22c55e"></div></div><span class="signal-val">0.511</span></td>
         </tr>
         <tr>
           <td class="sym">JBL</td>
           <td class="num">18.8%</td>
-          <td class="num">$321.96</td>
-          <td class="num">$305.91</td>
+          <td class="num" title="Bought 2026-07-13">$321.96</td>
+          <td class="num">$316.76</td>
           <td class="num">$19,214</td>
-          <td class="num">$18,256</td>
-          <td class="num"><span class="neg">-4.99%</span></td>
+          <td class="num">$18,904</td>
+          <td class="num"><span class="neg">-1.62%</span></td>
           <td class="signal-cell"><div class="signal-bar-bg"><div class="signal-bar-fill" style="width:48%;background:#f59e0b"></div></div><span class="signal-val">0.490</span></td>
         </tr>
       </tbody>
@@ -287,8 +307,8 @@
           <td>Total</td>
           <td></td><td></td><td></td>
           <td class="num">$101,963</td>
-          <td class="num">$100,920</td>
-          <td class="num"><span class="neg">-1.02%</span></td>
+          <td class="num">$100,692</td>
+          <td class="num"><span class="neg">-1.25%</span></td>
           <td></td>
         </tr>
       </tfoot>
@@ -296,7 +316,7 @@
   </section>
   <section>
     <h2>Previous Portfolio &nbsp;·&nbsp; 2026-07-13 → 2026-07-13</h2>
-    <p class="prev-date">Bought 2026-07-13, sold 2026-07-13</p>
+    <p class="prev-date">This composition held 2026-07-13 → 2026-07-13</p>
     <p class="value-line">$101,963 → $101,963
        &nbsp;(<span class="pos">+0.00%</span>)</p>
     <div class="change-badges" style="margin:10px 0 14px"><span class="badge" style="background:#16a34a">BUY ORCL</span> <span class="badge" style="background:#dc2626">SELL CMCSA</span> <span class="badge" style="background:#6b7280">HOLD ALB</span> <span class="badge" style="background:#6b7280">HOLD CSGP</span> <span class="badge" style="background:#6b7280">HOLD DD</span> <span class="badge" style="background:#6b7280">HOLD IT</span></div>
@@ -308,18 +328,18 @@
           <th>Symbol</th>
           <th class="num">Alloc</th>
           <th class="num">Buy price</th>
-          <th class="num">Sell price</th>
+          <th class="num">Exit price</th>
           <th class="num">Buy value</th>
-          <th class="num">Sell value</th>
+          <th class="num">Exit value</th>
           <th class="num">P/L</th>
           
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="sym">DD</td>
+          <td class="sym">DD <span class="dim" style="font-size:0.72rem">(still held)</span></td>
           <td class="num">21.3%</td>
-          <td class="num">$132.66</td>
+          <td class="num" title="Bought 2026-07-13">$132.66</td>
           <td class="num">$132.66</td>
           <td class="num">$21,679</td>
           <td class="num">$21,679</td>
@@ -327,19 +347,19 @@
           
         </tr>
         <tr>
-          <td class="sym">CSGP</td>
+          <td class="sym">CSGP <span class="dim" style="font-size:0.72rem">(still held)</span></td>
           <td class="num">20.9%</td>
-          <td class="num">$28.77</td>
+          <td class="num" title="Bought 2026-07-02">$30.00</td>
           <td class="num">$28.77</td>
           <td class="num">$21,293</td>
           <td class="num">$21,293</td>
-          <td class="num"><span class="pos">+0.00%</span></td>
+          <td class="num"><span class="neg">-4.10%</span></td>
           
         </tr>
         <tr>
-          <td class="sym">ALB</td>
+          <td class="sym">ALB <span class="dim" style="font-size:0.72rem">(still held)</span></td>
           <td class="num">20.2%</td>
-          <td class="num">$125.79</td>
+          <td class="num" title="Bought 2026-07-13">$125.79</td>
           <td class="num">$125.79</td>
           <td class="num">$20,600</td>
           <td class="num">$20,600</td>
@@ -347,9 +367,9 @@
           
         </tr>
         <tr>
-          <td class="sym">IT</td>
+          <td class="sym">IT <span class="dim" style="font-size:0.72rem">(still held)</span></td>
           <td class="num">19.1%</td>
-          <td class="num">$141.31</td>
+          <td class="num" title="Bought 2026-07-13">$141.31</td>
           <td class="num">$141.31</td>
           <td class="num">$19,493</td>
           <td class="num">$19,493</td>
@@ -359,7 +379,7 @@
         <tr>
           <td class="sym">ORCL</td>
           <td class="num">18.5%</td>
-          <td class="num">$131.54</td>
+          <td class="num" title="Bought 2026-07-13">$131.54</td>
           <td class="num">$131.54</td>
           <td class="num">$18,899</td>
           <td class="num">$18,899</td>
@@ -381,7 +401,7 @@
   </section>
   <section>
     <h2>Previous Portfolio &nbsp;·&nbsp; 2026-07-13 → 2026-07-13</h2>
-    <p class="prev-date">Bought 2026-07-13, sold 2026-07-13</p>
+    <p class="prev-date">This composition held 2026-07-13 → 2026-07-13</p>
     <p class="value-line">$101,963 → $101,963
        &nbsp;(<span class="pos">+0.00%</span>)</p>
     <div class="change-badges" style="margin:10px 0 14px"><span class="badge" style="background:#16a34a">BUY ALB</span> <span class="badge" style="background:#16a34a">BUY CSGP</span> <span class="badge" style="background:#16a34a">BUY DD</span> <span class="badge" style="background:#16a34a">BUY IT</span> <span class="badge" style="background:#dc2626">SELL BLDR</span> <span class="badge" style="background:#dc2626">SELL LULU</span> <span class="badge" style="background:#dc2626">SELL MKC</span> <span class="badge" style="background:#dc2626">SELL TSCO</span> <span class="badge" style="background:#6b7280">HOLD CMCSA</span></div>
@@ -393,18 +413,18 @@
           <th>Symbol</th>
           <th class="num">Alloc</th>
           <th class="num">Buy price</th>
-          <th class="num">Sell price</th>
+          <th class="num">Exit price</th>
           <th class="num">Buy value</th>
-          <th class="num">Sell value</th>
+          <th class="num">Exit value</th>
           <th class="num">P/L</th>
           
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="sym">DD</td>
+          <td class="sym">DD <span class="dim" style="font-size:0.72rem">(still held)</span></td>
           <td class="num">20.8%</td>
-          <td class="num">$132.66</td>
+          <td class="num" title="Bought 2026-07-13">$132.66</td>
           <td class="num">$132.66</td>
           <td class="num">$21,219</td>
           <td class="num">$21,219</td>
@@ -412,19 +432,19 @@
           
         </tr>
         <tr>
-          <td class="sym">CSGP</td>
+          <td class="sym">CSGP <span class="dim" style="font-size:0.72rem">(still held)</span></td>
           <td class="num">20.4%</td>
-          <td class="num">$28.77</td>
+          <td class="num" title="Bought 2026-07-02">$30.00</td>
           <td class="num">$28.77</td>
           <td class="num">$20,841</td>
           <td class="num">$20,841</td>
-          <td class="num"><span class="pos">+0.00%</span></td>
+          <td class="num"><span class="neg">-4.10%</span></td>
           
         </tr>
         <tr>
           <td class="sym">CMCSA</td>
           <td class="num">20.3%</td>
-          <td class="num">$23.97</td>
+          <td class="num" title="Bought 2026-07-13">$23.97</td>
           <td class="num">$23.97</td>
           <td class="num">$20,662</td>
           <td class="num">$20,662</td>
@@ -432,9 +452,9 @@
           
         </tr>
         <tr>
-          <td class="sym">ALB</td>
+          <td class="sym">ALB <span class="dim" style="font-size:0.72rem">(still held)</span></td>
           <td class="num">19.8%</td>
-          <td class="num">$125.79</td>
+          <td class="num" title="Bought 2026-07-13">$125.79</td>
           <td class="num">$125.79</td>
           <td class="num">$20,162</td>
           <td class="num">$20,162</td>
@@ -442,9 +462,9 @@
           
         </tr>
         <tr>
-          <td class="sym">IT</td>
+          <td class="sym">IT <span class="dim" style="font-size:0.72rem">(still held)</span></td>
           <td class="num">18.7%</td>
-          <td class="num">$141.31</td>
+          <td class="num" title="Bought 2026-07-13">$141.31</td>
           <td class="num">$141.31</td>
           <td class="num">$19,079</td>
           <td class="num">$19,079</td>
@@ -478,7 +498,7 @@
 </main>
 
 <footer>
-  Generated by update_web_portfolio.py &nbsp;·&nbsp; Tuesday, 21 July 2026  11:04
+  Generated by update_web_portfolio.py &nbsp;·&nbsp; Wednesday, 22 July 2026  04:04
 </footer>
 
 </body>
